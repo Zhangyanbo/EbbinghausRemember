@@ -45,7 +45,7 @@ private:
 	std::vector<bool> alive;
 
 	//=======const datas
-	const std::array<long, 6> dayshift = {0, 1, 2, 4, 7, 15};
+	const std::array<long, 8> dayshift = {0, 1, 2, 4, 7, 15, 30, 60};
 };
 
 inline void timeData::start()
