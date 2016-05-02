@@ -28,6 +28,8 @@ public:
 	virtual void Select(time_t, time_t, std::ostream &) const;
 
 	virtual void getToday(std::ostream &os);
+
+	virtual void back() const;
 protected:
 	std::vector<time_t> tList;
 	std::vector<std::string> nameList;
@@ -100,7 +102,8 @@ inline void timeData::save()
 
 	write(data);
 
-	close();
+	wfile.close();
+	//close('w');
 }
 
 inline void timeData::delete_name(std::string de_str)
@@ -126,6 +129,32 @@ inline void timeData::Select(time_t t1, time_t t2, std::ostream& os) const
 inline void timeData::getToday(std::ostream &os)
 {
 	getToday_do(os);
+}
+
+inline void timeData::back() const
+{
+	std::ofstream output_back;
+
+	output_back.open("tData.bak");
+
+	if (output_back.is_open())
+	{
+		for (size_t i = 0; i < data.size(); ++i)
+		{
+			if (alive[i]) {
+				for (size_t j = 0; j < data[i].size() - 1; ++j)
+				{
+					output_back << data[i][j] << ",";
+				}
+				output_back << data[i][data[i].size() - 1] << std::endl;
+			}
+		}
+
+		output_back.close();
+	}else
+	{
+		std::cout << "Error : cannot open file `tData.bak`" << std::endl;
+	}
 }
 
 inline void timeData::addWork_do(std::string name, time_t t)

@@ -92,6 +92,7 @@ int main()
 	timeData td;
 
 	td.start();
+	td.back();
 
 	//td.print(std::cout);
 
