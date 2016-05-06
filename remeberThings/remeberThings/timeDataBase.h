@@ -28,6 +28,7 @@ public:
 	virtual void Select(time_t, time_t, std::ostream &) const;
 
 	virtual void getToday(std::ostream &os);
+	virtual void getTodayShift(std::ostream &os, int) const;
 
 	virtual void back() const;
 protected:
@@ -38,6 +39,7 @@ private:
 	void addWork_do(std::string, time_t);
 	void makeData(void);
 	void getToday_do(std::ostream &os);
+	void getTodayShift_do(std::ostream &os, int) const;
 
 
 	std::vector<size_t> select_in(time_t, time_t) const;
@@ -131,6 +133,11 @@ inline void timeData::getToday(std::ostream &os)
 	getToday_do(os);
 }
 
+inline void timeData::getTodayShift(std::ostream& os, int dt) const
+{
+	getTodayShift_do(os, dt);
+}
+
 inline void timeData::back() const
 {
 	std::ofstream output_back;
@@ -219,6 +226,26 @@ inline void timeData::getToday_do(std::ostream& os)
 			if (days == dayshift[i])
 			{
 				os << "dt = " << days << "\t : " << nameList[j] << std::endl;
+			}
+		}
+	}
+}
+
+inline void timeData::getTodayShift_do(std::ostream& os, int dt) const
+{
+	long days;
+	time_t today = time(nullptr);
+
+	for (size_t i = 0; i < dayshift.size(); ++i)
+	{
+		for (size_t j = 0; j < nameList.size(); ++j)
+		{
+			days = today / 86400 - tList[j] / 86400;
+			days -= dt;
+
+			if (days == dayshift[i])
+			{
+				os << "dt = " << days << "\t : " << nameList[j] << "\t | shift = " << dt << std::endl;
 			}
 		}
 	}

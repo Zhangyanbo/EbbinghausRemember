@@ -78,6 +78,14 @@ void work(timeData &td)
 			td.getToday(std::cout);
 		}
 
+		if (control == "todos" || control == "Todos" || control == "TODOS")
+		{
+			int dt;
+			std::cout << "shift" << input;
+			std::cin >> dt;
+			td.getTodayShift(std::cout, dt);
+		}
+
 		std::cout << input;
 		std::cin >> control;
 	}
