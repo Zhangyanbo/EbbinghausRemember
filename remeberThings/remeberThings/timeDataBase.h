@@ -31,6 +31,7 @@ public:
 	virtual void getTodayShift(std::ostream &os, int) const;
 
 	virtual void back() const;
+	virtual int count(std::string) const;
 protected:
 	std::vector<time_t> tList;
 	std::vector<std::string> nameList;
@@ -61,7 +62,10 @@ inline void timeData::start()
 
 inline void timeData::addWork(std::string name)
 {
-	addWork_do(name, time(nullptr));
+	if (count(name) == 0)
+		addWork_do(name, time(nullptr));
+	else
+		std::cout << "Already have this name." << std::endl;
 }
 
 inline void timeData::addWorkShift(std::string name, long dt)
@@ -164,6 +168,18 @@ inline void timeData::back() const
 	}
 }
 
+inline int timeData::count(std::string item) const
+{
+	int i = 0;
+	for (auto j = 1; j < nameList.size(); ++j)
+	{
+		if (nameList[j] == item)
+			++i;
+	}
+
+	return i;
+}
+
 inline void timeData::addWork_do(std::string name, time_t t)
 {
 	data.push_back({});
@@ -173,11 +189,6 @@ inline void timeData::addWork_do(std::string name, time_t t)
 	data[p].push_back(name);
 	nameList.push_back(name);
 
-
-	//char temp_index[200];
-	//sprintf(temp_index, "%p", &t);
-	//std::string temp_indexx;
-	//temp_indexx = temp_index;
 
 	std::stringstream ss;
 	std::string temp_t_s;
@@ -223,7 +234,7 @@ inline void timeData::getToday_do(std::ostream& os)
 		{
 			days = today / 86400 - tList[j] / 86400;
 
-			if (days == dayshift[i])
+			if (days == dayshift[i] && alive[j])
 			{
 				os << "dt = " << days << "\t : " << nameList[j] << std::endl;
 			}
@@ -243,7 +254,7 @@ inline void timeData::getTodayShift_do(std::ostream& os, int dt) const
 			days = today / 86400 - tList[j] / 86400;
 			days -= dt;
 
-			if (days == dayshift[i])
+			if (days == dayshift[i] && alive[j])
 			{
 				os << "dt = " << days << "\t : " << nameList[j] << "\t | shift = " << dt << std::endl;
 			}
