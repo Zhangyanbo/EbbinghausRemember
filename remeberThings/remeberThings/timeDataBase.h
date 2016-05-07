@@ -20,6 +20,8 @@ public:
 	virtual void addWork(std::string);
 	virtual void addWorkShift(std::string, long);
 
+	virtual int renew(std::string);
+
 	void print(std::ostream &) const override;
 	int write(mat_t &) override;
 	void save(void);
@@ -41,7 +43,12 @@ private:
 	void makeData(void);
 	void getToday_do(std::ostream &os);
 	void getTodayShift_do(std::ostream &os, int) const;
+	long search(std::string);
 
+	inline auto now(void)
+	{
+		return time(nullptr);
+	}
 
 	std::vector<size_t> select_in(time_t, time_t) const;
 
@@ -71,6 +78,20 @@ inline void timeData::addWork(std::string name)
 inline void timeData::addWorkShift(std::string name, long dt)
 {
 	addWork_do(name, time(nullptr) - dt * 86400);
+}
+
+inline int timeData::renew(std::string key)
+{
+	long index = search(key);
+
+	if (index != -1)
+	{
+		tList[index] = now();
+		return 1;
+	}else
+	{
+		return -1;
+	}
 }
 
 inline void timeData::print(std::ostream &os) const
@@ -260,6 +281,17 @@ inline void timeData::getTodayShift_do(std::ostream& os, int dt) const
 			}
 		}
 	}
+}
+
+inline long timeData::search(std::string key)
+{
+	for (auto i = 0; i < nameList.size(); ++i)
+	{
+		if (nameList[i] == key)
+			return i;
+	}
+
+	return -1;
 }
 
 inline std::vector<size_t> timeData::select_in(time_t t1, time_t t2) const

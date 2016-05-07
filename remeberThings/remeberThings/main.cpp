@@ -86,6 +86,18 @@ void work(timeData &td)
 			td.getTodayShift(std::cout, dt);
 		}
 
+		if (control == "renew")
+		{
+			std::string name;
+			std::cout << "name" << input;
+			std::cin >> name;
+			if (td.renew(name) == -1)
+			{
+				std::cout << "Cannot find this name \"" << name << "\"" << std::endl;
+			}
+
+		}
+
 		std::cout << input;
 		std::cin >> control;
 	}
