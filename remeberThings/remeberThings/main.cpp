@@ -5,6 +5,10 @@
 #include "timeDataBase.h"
 
 void work(timeData &td);
+inline bool CtrlZ(std::string &item)
+{
+	return item == "[-]";
+}
 
 void work(timeData &td)
 {
@@ -24,6 +28,11 @@ void work(timeData &td)
 			std::string name;
 			std::cin >> name;
 
+			if (CtrlZ(name)) {
+				control = " ";
+				continue;
+			}
+
 			std::cout << "dt" << input;
 			long dt;
 			std::cin >> dt;
@@ -35,6 +44,10 @@ void work(timeData &td)
 		{
 			std::cout << "Add" << input;
 			std::cin >> temps;
+			if (CtrlZ(temps)) {
+				control = " ";
+				continue;
+			}
 
 			td.addWork(temps);
 		}
@@ -69,6 +82,10 @@ void work(timeData &td)
 
 			std::cout << "name" << input;
 			std::cin >> delete_name;
+			if (CtrlZ(delete_name)) {
+				control = " ";
+				continue;
+			}
 
 			td.delete_name(delete_name);
 		}
@@ -91,6 +108,11 @@ void work(timeData &td)
 			std::string name;
 			std::cout << "name" << input;
 			std::cin >> name;
+			if (CtrlZ(name)) {
+				control = " ";
+				continue;
+			}
+
 			if (td.renew(name) == -1)
 			{
 				std::cout << "Cannot find this name \"" << name << "\"" << std::endl;
